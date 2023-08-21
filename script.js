@@ -1,3 +1,4 @@
+const runningOperation = document.getElementById('runningOperation');
 const accumulator = document.getElementById('accumulator');
 const equal = document.getElementById('equal');
 let currentOperation = new Operation();
@@ -20,16 +21,9 @@ function divide(a, b) {
 }
 
 function evaluateOperation() {
-    let result;
-    if (currentOperation.operand1 === undefined || currentOperation.operator === undefined) {
-        return;
-    } else if (currentOperation.operand2 === undefined) {
-        result = currentOperation.operand1;
-    }  else {
-        result = currentOperation.compute();
-        currentOperation = new Operation();
-        currentOperation.processOperand(result);
-    }
+    updateRunningOperation();
+    const result = currentOperation.compute();
+    currentOperation = new Operation();
     displayResult(result);
 }
 
@@ -37,10 +31,18 @@ function evaluateOperation() {
 function Operation() {
     this.operand1 = undefined;
     this.operand2 = undefined;
+    this.operatorString = undefined;
     this.operator = undefined;
     this.compute = function() {
-        return this.operator(this.operand1, this.operand2);
+        if (this.operand1 == undefined) {
+            return;
+        } else if (this.operand2 === undefined || this.operator === undefined) {
+            return this.operand1;
+        } else {
+            return this.operator(this.operand1, this.operand2);
+        }
     }
+
     this.processOperand = function(operand) {
         if (this.operand1 === undefined) {
             this.operand1 = operand;
@@ -48,8 +50,9 @@ function Operation() {
             this.operand2 = operand;
         }
     },
-    this.processOperator = function(operator) {
-        switch(operator) {
+    this.processOperator = function(operatorString) {
+        this.operatorString = operatorString;
+        switch(operatorString) {
             case '+':
                 this.operator = add;
                 break;
@@ -64,13 +67,30 @@ function Operation() {
                 break;
         }
     }
+
+    this.toString = function() {
+        let toReturn = "";
+        if (this.operand1 !== undefined) {
+            toReturn += `${this.operand1} `;
+        } 
+        if (this.operator !== undefined) {
+            toReturn += `${this.operatorString} `;
+        }  
+        if (this.operand2 !== undefined) {
+            toReturn += ` ${this.operand2} `;
+        }
+        return toReturn;
+    }
 }
 
 // TODO: functions that attach event listeners
 function setUpEventListeners() {
     setUpDigitEventListeners();
     setUpOperatorEventListeners();
-    equal.addEventListener('click', evaluateOperation);
+    equal.addEventListener('click', () => {
+        storeOperand();
+        evaluateOperation();
+    })
 }
 function setUpClickEventListeners(className, callbackFunc) {
     const collection = document.getElementsByClassName(className);
@@ -88,6 +108,7 @@ function setUpOperatorEventListeners() {
         storeOperand();
         resetAccumulator();
         storeOperator(event);
+        updateRunningOperation();
     })
 }
 
@@ -107,11 +128,16 @@ function storeOperand() {
 }
 
 function storeOperator(event) {
-    const operator = event.currentTarget.value;
-    currentOperation.processOperator(operator);
+    const operatorString = event.currentTarget.value;
+    currentOperation.processOperator(operatorString);
 }
 
 // TODO: handles displaying to interface
+
+function updateRunningOperation(toDisplay) {
+    runningOperation.textContent = currentOperation.toString();
+}
+
 function resetAccumulator() {
     accumulator.textContent = '0';
 }
