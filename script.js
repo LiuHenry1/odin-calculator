@@ -29,7 +29,26 @@ function Operation() {
 }
 
 // TODO: functions that attach event listeners
+function setUpClickEventListeners(className, callbackFunc) {
+    const collection = document.getElementsByClassName(className);
+    Array.from(collection).forEach(element => {
+        element.addEventListener('click', callbackFunc);
+    });
+}
 
+function setUpDigitEventListeners() {
+    setUpClickEventListeners('digit', buildOperand)
+}
 
 // TODO: callback functions for the event listeners
+function buildOperand(event) {
+    const digit = event.currentTarget.value;
+    if (accumulator.textContent == '0') {
+        accumulator.textContent = digit;
+    } else {
+        accumulator.textContent += digit;
+    }
+}
+
+setUpDigitEventListeners();
 
