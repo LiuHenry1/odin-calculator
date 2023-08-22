@@ -123,6 +123,16 @@ function buildOperand(event) {
     }
 }
 
+function storeOperand() {
+    const operand = Number(accumulator.textContent);
+    currentOperation.processOperand(operand);
+}
+
+function storeOperator(event) {
+    const operatorString = event.currentTarget.value;
+    currentOperation.processOperator(operatorString);
+}
+
 function deleteRightDigit() {
     accumulator.textContent = accumulator.textContent.slice(0, accumulator.textContent.length - 1);
     if (accumulator.textContent === '') {
@@ -134,16 +144,6 @@ function reset() {
     resetAccumulator();
     resetRunningOperation();
     currentOperation = new Operation();
-}
-
-function storeOperand() {
-    const operand = Number(accumulator.textContent);
-    currentOperation.processOperand(operand);
-}
-
-function storeOperator(event) {
-    const operatorString = event.currentTarget.value;
-    currentOperation.processOperator(operatorString);
 }
 
 function resetRunningOperation() {
