@@ -1,6 +1,9 @@
 const runningOperation = document.getElementById('runningOperation');
 const accumulator = document.getElementById('accumulator');
 const equal = document.getElementById('equal');
+const clear = document.getElementById('clear');
+const allclear = document.getElementById('allclear');
+
 let currentOperation = new Operation();
 
 function add(a, b) {
@@ -88,6 +91,8 @@ function setUpEventListeners() {
         storeOperand();
         evaluateOperation();
     })
+    clear.addEventListener('click', deleteRightDigit);
+    allclear.addEventListener('click', reset);
 }
 function setUpClickEventListeners(className, callbackFunc) {
     const collection = document.getElementsByClassName(className);
@@ -118,6 +123,19 @@ function buildOperand(event) {
     }
 }
 
+function deleteRightDigit() {
+    accumulator.textContent = accumulator.textContent.slice(0, accumulator.textContent.length - 1);
+    if (accumulator.textContent === '') {
+        resetAccumulator();
+    } 
+}
+
+function reset() {
+    resetAccumulator();
+    resetRunningOperation();
+    currentOperation = new Operation();
+}
+
 function storeOperand() {
     const operand = Number(accumulator.textContent);
     currentOperation.processOperand(operand);
@@ -128,7 +146,9 @@ function storeOperator(event) {
     currentOperation.processOperator(operatorString);
 }
 
-// TODO: handles displaying to interface
+function resetRunningOperation() {
+    runningOperation.textContent = '';
+}
 
 function updateRunningOperation() {
     runningOperation.textContent = currentOperation.toString();
