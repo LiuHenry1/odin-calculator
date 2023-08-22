@@ -3,7 +3,6 @@ const accumulator = document.getElementById('accumulator');
 const equal = document.getElementById('equal');
 let currentOperation = new Operation();
 
-// TODO: simple arthimetic functions
 function add(a, b) {
     return a + b;
 }
@@ -27,7 +26,6 @@ function evaluateOperation() {
     displayResult(result);
 }
 
-// TODO: object that stores operand and operator data
 function Operation() {
     this.operand1 = undefined;
     this.operand2 = undefined;
@@ -83,7 +81,6 @@ function Operation() {
     }
 }
 
-// TODO: functions that attach event listeners
 function setUpEventListeners() {
     setUpDigitEventListeners();
     setUpOperatorEventListeners();
@@ -106,13 +103,12 @@ function setUpDigitEventListeners() {
 function setUpOperatorEventListeners() {
     setUpClickEventListeners('operator', () => {
         storeOperand();
-        resetAccumulator();
         storeOperator(event);
+        resetAccumulator();
         updateRunningOperation();
     })
 }
 
-// TODO: callback functions for the event listeners
 function buildOperand(event) {
     const digit = event.currentTarget.value;
     if (accumulator.textContent == '0') {
@@ -134,7 +130,7 @@ function storeOperator(event) {
 
 // TODO: handles displaying to interface
 
-function updateRunningOperation(toDisplay) {
+function updateRunningOperation() {
     runningOperation.textContent = currentOperation.toString();
 }
 
