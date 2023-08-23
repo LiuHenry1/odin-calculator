@@ -15,15 +15,12 @@ function divide(a, b) {
 }
 
 // TODO: write logic to accumulate operand when a number is pressed
-// 1) attach handlers
 function setUpDigitEventListeners() {
     const digits = document.getElementsByClassName('digit');
-    Array.from(digits).forEach(digit => digit.addEventListener('click', () => {
-        appendDigit(digit.value);
-    }));
+    Array.from(digits).forEach(digit => digit.addEventListener('click', () => 
+        appendDigit(digit.value)));
 }
 
-// 2) implement callback
 function appendDigit(digit) {
     const accumulator = document.getElementById('accumulator');
     
@@ -72,4 +69,28 @@ function Operation() {
     this.storeOperator = function(operator) {
         this.operator = operator;
     }
+}
+
+// TODO: write logic to store operand when an operator is pressed
+let currentOperation = new Operation();
+function setUpOperatorEventListeners() {
+    const operators = document.getElementsByClassName('operator');
+    Array.from(operators).forEach(operator => operator.addEventListener('click', () => {
+        processInputs(operator.value);
+    }))
+}
+
+function processInputs(operator) {
+    processOperand();
+    processOperator(operator);
+}
+
+function processOperand() {
+    const accumulator = document.getElementById('accumulator');
+    const operand = Number(accumulator.textContent);
+    currentOperation.storeOperand(operand);
+}
+
+function processOperator(operator) {
+    currentOperation.storeOperator(operator);
 }
