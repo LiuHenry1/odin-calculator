@@ -110,6 +110,9 @@ function setUpOperatorEventListeners() {
 }
 
 function processInputs(operator) {
+    if (currentOperation.operator !== undefined) {
+        evaluateOperation();
+    } 
     processOperand();
     processOperator(operator);
 }
@@ -143,14 +146,14 @@ setUpOperatorEventListeners();
 function setUpEqualEventListener() {
     const equal = document.getElementById('equal');
     equal.addEventListener('click', () => {
-        processOperand();
-        updateDisplay();
-        const result = evaluateOperation();
-        displayResult(result);
+        evaluateOperation();
     });
 }
 
 function evaluateOperation() {
+    processOperand();
+    updateDisplay();
+
     let result;
     if (currentOperation.operand1 === undefined) {
         return;
@@ -159,7 +162,9 @@ function evaluateOperation() {
     } else {
         result = currentOperation.compute();
     }
-    return result;
+
+    displayResult(result);
+    currentOperation = new Operation();
 }
 
 function displayResult(result) {
