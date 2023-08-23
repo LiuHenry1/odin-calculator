@@ -55,3 +55,21 @@ function deleteDigit() {
 }
 
 setUpClearEventListeners();
+
+// TODO: write object to store operand and operator
+function Operation() {
+    this.operand1 = undefined;
+    this.operand2 = undefined;
+    this.operator = undefined;
+
+    this.storeOperand = function(operand) {
+        if (this.operand1 === undefined) 
+            this.operand1 = operand;
+        else 
+            this.operand2 = operand;
+    }
+
+    this.storeOperator = function(operator) {
+        this.operator = operator;
+    }
+}
