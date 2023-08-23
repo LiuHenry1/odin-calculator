@@ -35,3 +35,23 @@ function appendDigit(digit) {
 
 setUpDigitEventListeners();
 
+// TODO: write logic to implement 'AC' and 'C'
+function setUpClearEventListeners() {
+    const allclearButton = document.getElementById('AC');
+    allclearButton.addEventListener('click', reset);
+
+    const clearButton = document.getElementById('C');
+    clearButton.addEventListener('click', deleteDigit);
+
+}
+
+function reset() {
+    
+}
+
+function deleteDigit() {
+    const accumulator = document.getElementById('accumulator');
+    accumulator.textContent = accumulator.textContent.slice(0, -1);
+}
+
+setUpClearEventListeners();
