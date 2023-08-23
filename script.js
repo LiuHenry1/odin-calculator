@@ -72,6 +72,19 @@ function Operation() {
         this.operator = operator;
     }
 
+    this.compute = function() {
+        switch(this.operator) {
+            case '+':
+                return add(this.operand1, this.operand2);
+            case '-':
+                return subtract(this.operand1, this.operand2);
+            case 'x':
+                return multiply(this.operand1, this.operand2);
+            case '/':
+                return divide(this.operand1, this.operand2);
+        }
+    }
+
     this.toString = function() {
         let stringRepr = "";
         if (this.operand1 !== undefined)
@@ -91,6 +104,7 @@ function setUpOperatorEventListeners() {
     const operators = document.getElementsByClassName('operator');
     Array.from(operators).forEach(operator => operator.addEventListener('click', () => {
         processInputs(operator.value);
+        shouldProcessNewOperand = true;
         updateDisplay();
     }))
 }
@@ -111,7 +125,6 @@ function processOperator(operator) {
 
 function updateDisplay() {
     updateHistoryDisplay();
-    shouldProcessNewOperand = true;
 }   
 
 function resetAccumulator() {
@@ -123,4 +136,34 @@ function updateHistoryDisplay() {
     historyDisplay.textContent = currentOperation.toString();
 }
 
+
 setUpOperatorEventListeners();
+
+// TODO: write logic to compute operation
+function setUpEqualEventListener() {
+    const equal = document.getElementById('equal');
+    equal.addEventListener('click', () => {
+        processOperand();
+        updateDisplay();
+        const result = evaluateOperation();
+        displayResult(result);
+    });
+}
+
+function evaluateOperation() {
+    let result;
+    if (currentOperation.operand1 === undefined) {
+        return;
+    } else if (currentOperation.operand2 === undefined || currentOperation.operator === undefined) {
+        result = currentOperation.operand1;
+    } else {
+        result = currentOperation.compute();
+    }
+    return result;
+}
+
+function displayResult(result) {
+    accumulator.textContent = result;
+}
+
+setUpEqualEventListener();
