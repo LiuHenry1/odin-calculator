@@ -94,7 +94,8 @@ function reset() {
 
 function appendDigit(digit) {
     if (accumulator.textContent === '0' || shouldProcessNewOperand) {
-        resetAccumulator();
+        accumulator.textContent = '';
+        shouldProcessNewOperand = false;
     } 
 
     if (digit === '.') {
@@ -131,7 +132,7 @@ function processOperator(operator) {
 }
 
 function resetAccumulator() {
-    accumulator.textContent = '';
+    accumulator.textContent = '0';
     shouldProcessNewOperand = false;
 }
 
