@@ -1,7 +1,7 @@
 # odin-calculator
 The Odin Project: [Calculator](https://www.theodinproject.com/lessons/foundations-calculator)
 
-### Overview
+## Overview
 The fifth project in The Odin Project curriculum. Topics covered: 
 <ul>
     <li>DOM</li>
@@ -9,7 +9,8 @@ The fifth project in The Odin Project curriculum. Topics covered:
     <li>Basic HTML and CSS</li>
     <li>Git</li>
 </ul>
-### Reflection
+
+## Reflection
 So far the hardest project in terms of really managing complexity. 
 Had to rewrite code many times because I felt it was too disorganized
 and did not fit the best practices of modular programming. The current code
