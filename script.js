@@ -1,61 +1,9 @@
 const accumulator = document.getElementById('accumulator');
 const historyDisplay = document.getElementById('history');
-let shouldProcessNewOperand = false;
+let shouldProcessNewOperand = false
+let isDecimalPresent = false;
+let currentOperation = new Operation();
 
-
-function add(a, b) {
-    return a + b;
-}
-
-function subtract(a, b) {
-    return a - b;
-}
-
-function multiply(a, b) {
-    return a * b;
-}
-
-function divide(a, b) {
-    return a / b;
-}
-
-// TODO: write logic to accumulate operand when a number is pressed
-function setUpDigitEventListeners() {
-    const digits = document.getElementsByClassName('digit');
-    Array.from(digits).forEach(digit => digit.addEventListener('click', () => 
-        appendDigit(digit.value)));
-}
-
-function appendDigit(digit) {
-    if (shouldProcessNewOperand) {
-        resetAccumulator();
-    }
-    accumulator.textContent += digit;
-}
-
-setUpDigitEventListeners();
-
-// TODO: write logic to implement 'AC' and 'C'
-function setUpClearEventListeners() {
-    const allclearButton = document.getElementById('AC');
-    allclearButton.addEventListener('click', reset);
-
-    const clearButton = document.getElementById('C');
-    clearButton.addEventListener('click', deleteDigit);
-
-}
-
-function reset() {
-    
-}
-
-function deleteDigit() {
-    accumulator.textContent = accumulator.textContent.slice(0, -1);
-}
-
-setUpClearEventListeners();
-
-// TODO: write object to store operand and operator
 function Operation() {
     this.operand1 = undefined;
     this.operand2 = undefined;
@@ -98,15 +46,71 @@ function Operation() {
     }
 }
 
-// TODO: write logic to store operand when an operator is pressed
-let currentOperation = new Operation();
+function setUpAllEventListeners() {
+    setUpClearEventListeners();
+    setUpDigitEventListeners();
+    setUpEqualEventListener();
+    setUpOperatorEventListeners();
+}
+
+function setUpClearEventListeners() {
+    const allclearButton = document.getElementById('AC');
+    allclearButton.addEventListener('click', reset);
+
+    const clearButton = document.getElementById('C');
+    clearButton.addEventListener('click', deleteDigit);
+
+}
+
+function setUpDigitEventListeners() {
+    const digits = document.getElementsByClassName('digit');
+    Array.from(digits).forEach(digit => digit.addEventListener('click', () => 
+        appendDigit(digit.value)));
+}
+
 function setUpOperatorEventListeners() {
     const operators = document.getElementsByClassName('operator');
     Array.from(operators).forEach(operator => operator.addEventListener('click', () => {
         processInputs(operator.value);
         shouldProcessNewOperand = true;
-        updateDisplay();
+        isDecimalPresent = false;
+        updateHistory();
     }))
+}
+
+function setUpEqualEventListener() {
+    const equal = document.getElementById('equal');
+    equal.addEventListener('click', () => {
+        evaluateOperation();
+    });
+}
+
+function reset() {
+    isDecimalPresent = false;
+    currentOperation = new Operation();
+    resetAccumulator();
+    resetHistory();
+}
+
+function appendDigit(digit) {
+    if (accumulator.textContent === '0' || shouldProcessNewOperand) {
+        resetAccumulator();
+    } 
+
+    if (digit === '.') {
+        if (isDecimalPresent) 
+            return;
+
+        if (accumulator.textContent === '') 
+            accumulator.textContent = '0';
+
+        isDecimalPresent = true;
+    }
+    accumulator.textContent += digit;
+}
+
+function deleteDigit() {
+    accumulator.textContent = accumulator.textContent.slice(0, -1);
 }
 
 function processInputs(operator) {
@@ -126,33 +130,26 @@ function processOperator(operator) {
     currentOperation.storeOperator(operator);
 }
 
-function updateDisplay() {
-    updateHistoryDisplay();
-}   
-
 function resetAccumulator() {
     accumulator.textContent = '';
     shouldProcessNewOperand = false;
 }
 
-function updateHistoryDisplay() {
+function updateHistory() {
     historyDisplay.textContent = currentOperation.toString();
 }
 
+function resetHistory() {
+    historyDisplay.textContent = '';
+}
 
-setUpOperatorEventListeners();
-
-// TODO: write logic to compute operation
-function setUpEqualEventListener() {
-    const equal = document.getElementById('equal');
-    equal.addEventListener('click', () => {
-        evaluateOperation();
-    });
+function displayResult(result) {
+    accumulator.textContent = result;
 }
 
 function evaluateOperation() {
     processOperand();
-    updateDisplay();
+    updateHistory();
 
     let result;
     if (currentOperation.operand1 === undefined) {
@@ -167,8 +164,20 @@ function evaluateOperation() {
     currentOperation = new Operation();
 }
 
-function displayResult(result) {
-    accumulator.textContent = result;
+function add(a, b) {
+    return a + b;
 }
 
-setUpEqualEventListener();
+function subtract(a, b) {
+    return a - b;
+}
+
+function multiply(a, b) {
+    return a * b;
+}
+
+function divide(a, b) {
+    return a / b;
+}
+
+setUpAllEventListeners();
