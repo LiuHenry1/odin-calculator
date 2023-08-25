@@ -1,6 +1,7 @@
-# odin-calculator
-The Odin Project: [Calculator](https://www.theodinproject.com/lessons/foundations-calculator)
+# odin-calculator 
+The Odin Project: [Calculator](https://www.theodinproject.com/lessons/foundations-calculator)\
 [View Site](https://liuhenry1.github.io/odin-calculator/)
+
 
 ## Overview
 The fifth project in The Odin Project curriculum. Topics covered: 
