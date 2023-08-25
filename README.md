@@ -1,4 +1,4 @@
-Calculator
+# Calculator
 The Odin Project: [Calculator](https://www.theodinproject.com/lessons/foundations-calculator)\
 [View Site](https://liuhenry1.github.io/odin-calculator/)
 
